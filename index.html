@@ -88,6 +88,14 @@ html,body{
     inset 0 0 50px rgba(0,255,136,0.05);
 }
 
+/* 高戦闘力アラート（5000以上）*/
+.lens-body.danger{
+  border-color:#ff2222;
+  box-shadow:0 0 32px rgba(255,34,34,0.6),inset 0 0 50px rgba(255,0,0,0.08);
+  animation:danger-pulse .5s ease-in-out infinite;
+}
+@keyframes danger-pulse{0%,100%{box-shadow:0 0 32px rgba(255,34,34,0.6),inset 0 0 50px rgba(255,0,0,0.08)}50%{box-shadow:0 0 60px rgba(255,34,34,0.9),inset 0 0 60px rgba(255,0,0,0.15)}}
+
 /* スキャンライン */
 .lens-body::before{
   content:'';
@@ -281,7 +289,7 @@ html,body{
     <!-- アーム -->
     <div class="arm"></div>
     <!-- レンズ -->
-    <div class="lens-body">
+    <div class="lens-body" id="lensBody">
       <div class="lens-tint"></div>
       <!-- カメラ映像 -->
       <video id="camVideo" autoplay playsinline muted></video>
@@ -406,7 +414,7 @@ async function toggleCamera(){
     btn.textContent='[ CAMERA OFF ]'; btn.disabled=false; btn.className='btn danger';
     document.getElementById('btnScan').disabled=false;
     document.getElementById('stR').textContent='CAMERA ACTIVE';
-    document.getElementById('hudBadge').textContent='SEARCHING';
+    document.getElementById('hudBadge').textContent='READY';
     startInd();
     startFaceDetect();
   }catch(e){
@@ -452,16 +460,15 @@ function startFaceDetect(){
             document.getElementById('crosshair').classList.add('show');
             document.getElementById('stR').textContent='TARGET LOCKED';
             document.getElementById('hudBadge').textContent='LOCKED';
-            faceTimer=setTimeout(()=>{if(camOn&&!scanning)startScan();},2500);
+            // ← 自動スキャンは起動しない
           }
         } else {
           if(faceDetected){
             faceDetected=false;
-            clearTimeout(faceTimer);
             document.getElementById('targetRing').classList.remove('show');
             document.getElementById('crosshair').classList.remove('show');
-            document.getElementById('stR').textContent='SEARCHING...';
-            document.getElementById('hudBadge').textContent='SEARCHING';
+            document.getElementById('stR').textContent='READY';
+            document.getElementById('hudBadge').textContent='READY';
           }
         }
       }
@@ -484,6 +491,8 @@ function startScan(){
   document.getElementById('sweep').classList.add('on');
   document.getElementById('pnum').className='hud-pnum counting';
   document.getElementById('pnum').textContent='------';
+  document.getElementById('pnum').style.color='#00ff88';
+  document.getElementById('lensBody').classList.remove('danger');
   ['bp','bs','bk'].forEach(id=>document.getElementById(id).style.width='0%');
   ['vp','vs','vk'].forEach(id=>document.getElementById(id).textContent='--');
 
@@ -508,6 +517,17 @@ function showResult(d){
     if(n>=target){
       clearInterval(counter);
       document.getElementById('pnum').textContent=String(target).padStart(6,'0');
+      // 5000以上で枠を赤くする
+      const lens=document.getElementById('lensBody');
+      if(target>=5000){
+        lens.classList.add('danger');
+        document.getElementById('pnum').style.color='#ff4444';
+        document.getElementById('hudBadge').style.color='#ff4444';
+      } else {
+        lens.classList.remove('danger');
+        document.getElementById('pnum').style.color='#00ff88';
+        document.getElementById('hudBadge').style.color='';
+      }
       setTimeout(()=>{
         document.getElementById('bp').style.width=d.pct+'%'; document.getElementById('vp').textContent=d.pct;
         document.getElementById('bs').style.width=d.sp+'%';  document.getElementById('vs').textContent=d.sp;
@@ -519,9 +539,7 @@ function showResult(d){
         document.getElementById('hudBadge').textContent='DONE';
         document.getElementById('btnScan').disabled=false;
         scanning=false;
-        if(camOn){
-          faceTimer=setTimeout(()=>{if(camOn&&!scanning&&faceDetected)startScan();},4000);
-        }
+        // ← 自動ループなし。次はボタンを押すまで待機。
       },700);
     }
   },30);
