@@ -25,7 +25,7 @@ html,body{
    スカウター本体（ヘッドセット型）
 ══════════════════════════════ */
 .scouter-unit{
-  width:420px;height:380px;
+  width:440px;height:480px;
   position:relative;
   display:flex;align-items:center;justify-content:center;
 }
@@ -59,7 +59,7 @@ html,body{
 /* アーム（バンドからレンズへの接続部）*/
 .arm{
   position:absolute;
-  right:248px;top:50%;
+  right:370px;top:50%;
   width:60px;height:18px;
   background:#1a1a1a;
   border:2px solid #333;
@@ -76,16 +76,16 @@ html,body{
 /* レンズ本体（片目バイザー）*/
 .lens-body{
   position:absolute;
-  right:10px;top:50%;transform:translateY(-50%);
-  width:280px;height:220px;
+  right:8px;top:50%;transform:translateY(-50%);
+  width:380px;height:380px;
   background:#001a0d;
   border:3px solid #00cc66;
-  border-radius:12px 40px 12px 12px;
+  border-radius:16px 60px 16px 16px;
   overflow:hidden;
   z-index:4;
   box-shadow:
-    0 0 28px rgba(0,255,136,0.35),
-    inset 0 0 40px rgba(0,255,136,0.05);
+    0 0 32px rgba(0,255,136,0.4),
+    inset 0 0 50px rgba(0,255,136,0.05);
 }
 
 /* スキャンライン */
@@ -149,9 +149,9 @@ html,body{
 @keyframes scanRing{
   0%  {width:0;height:0;margin-left:0;margin-top:0;
        border:3px solid rgba(0,255,136,0.9);border-radius:50%}
-  80% {width:260px;height:200px;margin-left:-130px;margin-top:-100px;
+  80% {width:360px;height:360px;margin-left:-180px;margin-top:-180px;
        border:3px solid rgba(0,255,136,0.1);border-radius:50%}
-  100%{width:280px;height:220px;margin-left:-140px;margin-top:-110px;
+  100%{width:380px;height:380px;margin-left:-190px;margin-top:-190px;
        border:2px solid rgba(0,255,136,0);border-radius:50%}
 }
 
@@ -211,7 +211,7 @@ html,body{
 
 /* ステータスバー */
 .info-row{
-  width:420px;
+  width:440px;
   display:flex;gap:8px;align-items:center;
 }
 .info-seg{
@@ -226,7 +226,7 @@ html,body{
 .seg-val{color:#00ff88;font-size:14px;min-width:28px;text-align:right}
 
 /* ボタン */
-.btns{display:flex;gap:10px;width:420px}
+.btns{display:flex;gap:10px;width:440px}
 .btn{
   flex:1;padding:13px 8px;
   background:transparent;
@@ -244,24 +244,24 @@ html,body{
 
 /* ステータスライン */
 .statusline{
-  width:420px;
+  width:440px;
   display:flex;justify-content:space-between;
   font-size:13px;color:rgba(0,255,136,0.35);letter-spacing:1px;
 }
 
 /* セリフ */
 .quote-box{
-  width:420px;
+  width:440px;
   border:1px solid rgba(0,255,136,.2);
   background:#001a0d;
   padding:14px 16px;
-  font-size:20px;line-height:1.9;
+  font-size:30px;line-height:1.9;
   color:#00ff88;border-radius:2px;
   font-style:italic;
   opacity:0;transition:opacity .6s;
 }
 .quote-box.show{opacity:1}
-.qspk{font-size:15px;color:rgba(0,255,136,.4);margin-top:6px;font-style:normal;letter-spacing:1px}
+.qspk{font-size:22px;color:rgba(0,255,136,.4);margin-top:6px;font-style:normal;letter-spacing:1px}
 
 .hint{
   font-size:14px;color:rgba(0,255,136,.3);
